@@ -18,7 +18,11 @@ from dataclasses import dataclass, field
 from collections.abc import Iterable
 from functools import reduce
 from typing import Any, Dict, List, Optional, Union, Callable, TypeVar, Set, Type
-
+try:
+    from pyword import PyWord          # type: ignore
+except ImportError as e:               # pragma: no cover
+    print(f"Cannot import C extension: {e}", file=sys.stderr)
+    sys.exit(2)
 try:
     if platform.system() == "Windows":
         from ctypes import windll, byref, wintypes
@@ -266,6 +270,7 @@ def _bench_python(logger: logging.Logger) -> tuple[float, float]:
 
 # ------------------------------------------------------------------
 def main(argv: list[str] | None = None) -> None:
+    global ROUNDS, BENCH_SIZE
     argv = argv or sys.argv[1:]
     parser = argparse.ArgumentParser(description="PyWord micro-benchmark")
     parser.add_argument("-r", "--rounds", type=int, default=ROUNDS,
@@ -274,16 +279,8 @@ def main(argv: list[str] | None = None) -> None:
                         help="Payload bytes (default 64)")
     args = parser.parse_args(argv)
 
-    global ROUNDS, BENCH_SIZE
     ROUNDS   = args.rounds
     BENCH_SIZE = args.size
-
-    # import *this module here* so CLI help is instant even if ext missing
-    try:
-        from pyword import PyWord          # type: ignore
-    except ImportError as e:               # pragma: no cover
-        print(f"Cannot import C extension: {e}", file=sys.stderr)
-        sys.exit(2)
 
     log = LogAdapter(correlation_id="BENCH").logger
     log.info("PyWord benchmark started")
