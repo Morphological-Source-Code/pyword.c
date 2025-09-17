@@ -4,11 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyword"
-version = "0.0.12"
+version = "0.0.13"
 description = "Minimal PyWord C extension"
 authors = [{ name = "PHOVOS", email = "PHOVOS@outlook.com" }]
-requires-python = ">=3.13"
-version-file = "pyproject.toml"
+requires-python = ">=3.12"
 
 [tool.setuptools]
 py-modules = []
@@ -24,20 +23,12 @@ dev = [
     "jupyterlab",
 ]
 
-[tool.setuptools.ext-modules]
 [[tool.setuptools.ext-modules]]
 name = "pyword"
 sources = ["pyword.c"]
-include_dirs = ["."]
-
-[project.scripts]
-install = "python -m pip install -e ."
-setup = "pip install -e .[dev]"
-lint = "ruff ."
-typecheck = "mypy ."
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 strict = true
 show_error_codes = true
 disallow_untyped_defs = true

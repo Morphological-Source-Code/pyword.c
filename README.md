@@ -1,6 +1,8 @@
 # pyword.c
 pyword.c is a pythonic C&lt;->CPython harness with LSP-like features; an easy to-use python 3.12+ module for CICD and reflective/reflexive introspection of dynamic C libraries.
 
+I can't wait for Guido to save me, but I suspect Python will eventually have it's-own native LSP stdlib. Until then.. this will have to do, for me.
+
 ## install + run
 (optional) virtual-env:
     `python -m venv .venv && source .venv/bin/activate`

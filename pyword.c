@@ -57,7 +57,7 @@ PyDoc_STRVAR(pyword_len_doc,
 "__len__() -> int\n"
 "Number of bytes currently stored (0..64).");
 static Py_ssize_t
-pyword_len(PyWordObject *self)
+slot_pyword_len(PyWordObject *self)
 {
     return self->word.len;
 }
@@ -77,9 +77,14 @@ static PyTypeObject PyWordType = {
     .tp_new       = pyword_new,
     .tp_dealloc   = (destructor)pyword_dealloc,
     .tp_methods   = pyword_methods,
-    .tp_as_sequence = NULL,        /* no sequence protocol */
-    .tp_as_mapping = NULL,
-    .tp_as_buffer = NULL,          /* add later; buffer protocol */
+    .tp_as_sequence = NULL,
+    .tp_as_mapping  = NULL,
+    .tp_as_buffer   = NULL,
+    .tp_methods     = pyword_methods,
+    .tp_dealloc     = (destructor)pyword_dealloc,
+    .tp_as_sequence = &(PySequenceMethods){
+        .sq_length = slot_pyword_len,
+    },
 };
 
 /* ---------- module ---------- */
